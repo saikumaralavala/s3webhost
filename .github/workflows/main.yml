@@ -1,0 +1,24 @@
+name: Deploy to S3
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Configure AWS credentials from OIDC
+        id: aws-creds
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::074460675775:role/s3webhost-role
+          aws-region: us-east-1
+      - name: Install dependencies
+        run: aws sts get-caller-identity
+      - name: Sync S3 bucket
+        run: aws s3 sync website/ s3://s3webhost-role 
