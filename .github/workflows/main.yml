@@ -21,4 +21,4 @@ jobs:
       - name: Install dependencies
         run: aws sts get-caller-identity
       - name: Sync S3 bucket
-        run: aws s3 sync website/ s3://s3webhost 
+        run: aws s3 sync website/ s3://github-s3-iamrole 
